@@ -24,3 +24,12 @@ Sanat testindeki aşağıdaki eser görselleri The Metropolitan Museum of Art Op
 Kaynak ve açık erişim kayıtları: https://www.metmuseum.org/art/collection
 
 Görseller eğitim amaçlı soru içeriğinde, eser ve sanatçı bilgisiyle birlikte kullanılır. İndirme ve son kontrol tarihi: 1 Eylül 2026.
+
+## Bilgi Ustası uygulama ikonu
+
+`assets/images/ui/app-icon.png` ve 180, 192, 512 piksel türevleri 3 Eylül 2026 tarihinde bu proje için OpenAI görsel üretim aracıyla özgün olarak üretildi.
+
+- Konsept: Açık kitapla birleşen altın beyin ve tek bilgi yıldızı
+- Kullanım: Uygulama simgesi, favicon ve ana ekran ikonu
+- İçermez: Üçüncü taraf logo, marka, karakter, yazı veya filigran
+- Üretim kaydı: Codex proje konuşması, 3 Eylül 2026

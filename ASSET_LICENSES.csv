@@ -1,0 +1,11 @@
+path_pattern,status,source,license,evidence,checked_at
+assets/images/flags/*.webp,GREEN,Flagpedia/FlagCDN,Public Domain,https://flagpedia.net/download/images,2026-09-03
+assets/images/art/aristotle-homer.jpg,GREEN,The Metropolitan Museum of Art,CC0/Public Domain,https://www.metmuseum.org/art/collection/search/437394,2026-09-03
+assets/images/art/wheat-field-cypresses.jpg,GREEN,The Metropolitan Museum of Art,CC0/Public Domain,https://www.metmuseum.org/art/collection/search/436535,2026-09-03
+assets/images/art/washington-crossing.jpg,GREEN,The Metropolitan Museum of Art,CC0/Public Domain,https://www.metmuseum.org/art/collection/search/11417,2026-09-03
+assets/images/art/great-wave.jpg,GREEN,The Metropolitan Museum of Art,CC0/Public Domain,https://www.metmuseum.org/art/collection/search/36491,2026-09-03
+assets/images/ui/app-icon.png,GREEN,Project-generated original,Project asset,CREDITS.md#bilgi-ustası-uygulama-ikonu,2026-09-03
+assets/images/ui/app-icon-180.png,GREEN,Derived from project app icon,Project asset,CREDITS.md#bilgi-ustası-uygulama-ikonu,2026-09-03
+assets/images/ui/app-icon-192.png,GREEN,Derived from project app icon,Project asset,CREDITS.md#bilgi-ustası-uygulama-ikonu,2026-09-03
+assets/images/ui/app-icon-512.png,GREEN,Derived from project app icon,Project asset,CREDITS.md#bilgi-ustası-uygulama-ikonu,2026-09-03
+assets/images/ui/*.png,YELLOW_REVIEW,Existing project UI asset,Provenance review required,CREDITS.md,2026-09-03
