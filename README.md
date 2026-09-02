@@ -1,1 +1,1 @@
-# bilgi-uygulamas-
+# bilgi-uygulamasi
