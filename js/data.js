@@ -94,7 +94,7 @@ window.AppData = (() => {
     ['equatorial-guinea','Ekvator Ginesi','Ciudad de la Paz','Ciudad de la Paz, Ocak 2026’da Malabo’nun yerine ülkenin başkenti ilan edildi.'],
     ['eritrea','Eritre','Asmara'],
     ['estonia','Estonya','Tallinn'],
-    ['eswatini','Esvatini','Mbabane ve Lobamba','Mbabane idarî, Lobamba ise kraliyet ve yasama başkentidir.','Esvatini’nin iki başkenti hangileridir?'],
+    ['eswatini','Esvatini','Mbabane','Mbabane, Esvatini’nin idarî başkentidir; Lobamba ise kraliyet ve yasama merkezidir.','Esvatini’nin idarî başkenti hangisidir?'],
     ['ethiopia','Etiyopya','Addis Ababa'],
     ['fiji','Fiji','Suva'],
     ['finland','Finlandiya','Helsinki'],
@@ -115,7 +115,7 @@ window.AppData = (() => {
     ['hungary','Macaristan','Budapeşte'],
     ['iceland','İzlanda','Reykjavík'],
     ['india','Hindistan','Yeni Delhi'],
-    ['indonesia','Endonezya','Nusantara','Başkent Nusantara’ya taşınmaktadır; devlet kurumlarının Jakarta’dan geçişi aşamalı sürmektedir.','Endonezya’nın yeni başkentinin adı nedir?'],
+    ['indonesia','Endonezya','Jakarta','Nusantara yeni başkent olarak planlanmış olsa da gerekli başkanlık kararnamesi henüz yürürlüğe girmediği için Jakarta başkent statüsünü korumaktadır.','Endonezya’nın günümüzdeki başkenti hangisidir?'],
     ['iran','İran','Tahran'],
     ['iraq','Irak','Bağdat'],
     ['ireland','İrlanda','Dublin'],
@@ -198,10 +198,10 @@ window.AppData = (() => {
     ['slovenia','Slovenya','Ljubljana'],
     ['solomon-islands','Solomon Adaları','Honiara'],
     ['somalia','Somali','Mogadişu'],
-    ['south-africa','Güney Afrika','Pretoria, Cape Town ve Bloemfontein','Pretoria idarî, Cape Town yasama, Bloemfontein yargı başkentidir.','Güney Afrika’nın üç başkenti hangileridir?'],
+    ['south-africa','Güney Afrika','Pretoria','Pretoria idarî ve yürütme, Cape Town yasama, Bloemfontein ise yargı başkentidir.','Güney Afrika’nın idarî ve yürütme başkenti hangisidir?'],
     ['south-sudan','Güney Sudan','Juba'],
     ['spain','İspanya','Madrid'],
-    ['sri-lanka','Sri Lanka','Sri Jayawardenepura Kotte ve Kolombo','Sri Jayawardenepura Kotte yasama; Kolombo yürütme ve yargı merkezidir.','Sri Lanka’nın başkent işlevlerini paylaşan iki şehri hangileridir?'],
+    ['sri-lanka','Sri Lanka','Sri Jayawardenepura Kotte','Sri Jayawardenepura Kotte Sri Lanka’nın yasama başkentidir; Kolombo ise yürütme ve yargı merkezi olarak anılır.','Sri Lanka’nın yasama başkenti hangisidir?'],
     ['sudan','Sudan','Hartum','Hartum resmî başkenttir; iç savaş sırasında hükûmetin geçici idarî merkezi Port Sudan olmuştur.','Sudan’ın resmî başkenti hangisidir?'],
     ['suriname','Surinam','Paramaribo'],
     ['sweden','İsveç','Stockholm'],
@@ -258,6 +258,25 @@ window.AppData = (() => {
     return [...options.slice(rotation), ...options.slice(0, rotation)];
   };
 
+  // Birden fazla merkez kullanan veya başkent taşıyan ülkeler tek bir
+  // birleşik şıkla ele verilmez; her işlev ve dönem ayrı bilgi olarak sorulur.
+  const specialCapitalRecords = [
+    ['south-africa-legislative','Güney Afrika','Güney Afrika’nın yasama başkenti hangisidir?','Cape Town','Parlamentonun bulunduğu Cape Town, Güney Afrika’nın yasama başkentidir.'],
+    ['south-africa-judicial','Güney Afrika','Güney Afrika’nın yargı başkenti hangisidir?','Bloemfontein','Yüksek Temyiz Mahkemesinin bulunduğu Bloemfontein, Güney Afrika’nın yargı başkentidir.'],
+    ['eswatini-legislative','Esvatini','Esvatini’nin kraliyet ve yasama merkezi hangisidir?','Lobamba','Lobamba kraliyet merkezi ve yasama başkentidir; Mbabane idarî başkenttir.'],
+    ['sri-lanka-executive','Sri Lanka','Sri Lanka’nın yürütme ve yargı merkezi olarak anılan şehri hangisidir?','Kolombo','Kolombo yürütme ve yargı merkezi olarak anılır; Sri Jayawardenepura Kotte yasama başkentidir.'],
+    ['bolivia-government','Bolivya','Bolivya’nın hükûmet merkezi ve fiilî başkenti hangisidir?','La Paz','Sucre anayasal başkenttir; yürütme ve yasama organları La Paz’da çalışır.'],
+    ['netherlands-government','Hollanda','Hollanda hükûmetinin ve parlamentosunun bulunduğu şehir hangisidir?','Lahey','Amsterdam anayasal başkenttir; hükûmet, parlamento ve yüksek mahkemeler Lahey’dedir.'],
+    ['malaysia-administrative','Malezya','Malezya’nın federal idarî merkezi hangisidir?','Putrajaya','Kuala Lumpur resmî başkenttir; federal yönetimin idarî merkezi Putrajaya’dır.'],
+    ['benin-government','Benin','Benin hükûmetinin fiilen çalıştığı şehir hangisidir?','Cotonou','Porto-Novo resmî başkenttir; hükûmetin büyük bölümü Cotonou’da çalışır.'],
+    ['indonesia-future','Endonezya','Endonezya’nın gelecekte başkent yapmayı planladığı şehir hangisidir?','Nusantara','Nusantara planlanan yeni başkenttir; resmî geçiş tamamlanıncaya kadar Jakarta başkenttir.'],
+    ['equatorial-guinea-former','Ekvator Ginesi','Ciudad de la Paz’dan önce Ekvator Ginesi’nin başkenti hangi şehirdi?','Malabo','Malabo, Ocak 2026’da başkent Ciudad de la Paz’a taşınana kadar ülkenin başkentiydi.'],
+    ['burundi-former','Burundi','Gitega’dan önce Burundi’nin siyasi başkenti hangisiydi?','Bujumbura','Gitega 2019’da siyasi başkent oldu; Bujumbura ekonomik merkez olarak önemini korur.'],
+    ['tanzania-former','Tanzanya','Dodoma’dan önce Tanzanya’nın başkenti hangisiydi?','Darüsselam','Dodoma resmî başkenttir; eski başkent Darüsselam en büyük şehir ve önemli bir ekonomik merkezdir.'],
+    ['palestine-administrative','Filistin Devleti','Filistin Yönetimi’nin fiilî idarî merkezi hangisidir?','Ramallah','Filistin Devleti Doğu Kudüs’ü başkent olarak talep eder; Filistin Yönetimi’nin fiilî idarî merkezi Ramallah’tır.']
+  ];
+  const specialCapitalPool = [...new Set([...capitalPool,...specialCapitalRecords.map(record=>record[3])])];
+
   const questions = capitalRecords.flatMap(([id, country, correctAnswer, note, customQuestion], index) => {
     const explanation = note || `${correctAnswer}, ${country} ülkesinin başkentidir.`;
     return [
@@ -284,7 +303,28 @@ window.AppData = (() => {
         explanation
       }
     ];
-  });
+  }).concat(specialCapitalRecords.flatMap(([id,country,question,correctAnswer,explanation])=>[
+    {
+      id:`world_capitals_${id}`,
+      categoryId:'world',
+      subcategoryId:'capitals',
+      direction:'country-to-capital',
+      question,
+      options:makeOptions(id,correctAnswer,specialCapitalPool),
+      correctAnswer,
+      explanation
+    },
+    {
+      id:`world_capitals_reverse_${id}`,
+      categoryId:'world',
+      subcategoryId:'capitals',
+      direction:'capital-to-country',
+      question:`${correctAnswer}, hangi ülkenin başkent düzeninde yer alan bir merkezdir?`,
+      options:makeOptions(`reverse-${id}`,country,countryPool),
+      correctAnswer:country,
+      explanation
+    }
+  ]));
 
   const flagQuestions = capitalRecords.map(([id, country], index) => ({
     id: `world_flags_${id}`,
