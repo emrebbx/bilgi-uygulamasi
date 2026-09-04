@@ -17,6 +17,9 @@
   .hero-mini { width:72px; height:72px; }
   .hero-card .btn { padding:0 10px; font-size:.68rem; }
 }
+@media (max-width: 768px) {
+  input, textarea, select { font-size: 16px !important; }
+}
 @media (hover: hover) {
   .btn:hover, .category-card:hover, .quick-card:hover, .sub-card:hover { filter: brightness(1.02); transform: translateY(-2px); }
   .answer:hover:not(:disabled) { border-color: #a9c3e4; }

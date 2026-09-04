@@ -276,9 +276,11 @@ window.AppData = (() => {
     ['palestine-administrative','Filistin Devleti','Filistin Yönetimi’nin fiilî idarî merkezi hangisidir?','Ramallah','Filistin Devleti Doğu Kudüs’ü başkent olarak talep eder; Filistin Yönetimi’nin fiilî idarî merkezi Ramallah’tır.']
   ];
   const specialCapitalPool = [...new Set([...capitalPool,...specialCapitalRecords.map(record=>record[3])])];
+  const capitalTestOne = new Map((window.CapitalTestOne||[]).map(item=>[item.id,item]));
 
   const questions = capitalRecords.flatMap(([id, country, correctAnswer, note, customQuestion], index) => {
-    const explanation = note || `${correctAnswer}, ${country} ülkesinin başkentidir.`;
+    const lesson=capitalTestOne.get(id);
+    const explanation = lesson?.explanation || note || `${correctAnswer}, ${country} ülkesinin başkentidir.`;
     return [
       {
         id: `world_capitals_${id}`,
@@ -286,8 +288,12 @@ window.AppData = (() => {
         subcategoryId: 'capitals',
         direction: 'country-to-capital',
         question: customQuestion || `${country} ülkesinin başkenti hangisidir?`,
-        options: makeOptions(id, correctAnswer),
+        options: lesson?.options || makeOptions(id, correctAnswer),
         correctAnswer,
+        acceptedAnswers:lesson?.acceptedAnswers||[],
+        mainFact:lesson?.mainFact,
+        detail:lesson?.detail,
+        learningOrder:lesson?.learningOrder,
         flagCode: countryCodes[index],
         explanation
       },
@@ -434,14 +440,15 @@ window.AppData = (() => {
     ['arnolfini','Arnolfini’nin Evlenmesi adlı eserin ressamı kimdir?',['Jan van Eyck','Hans Holbein','Rogier van der Weyden','Albrecht Dürer'],'Jan van Eyck','Jan van Eyck’ın 1434 tarihli eseri ayrıntılı yağlı boya tekniğiyle tanınır.']
   ].map(([id,question,options,correctAnswer,explanation,image])=>({ id:`art_painters_${id}`, categoryId:'art', subcategoryId:'painters', question, options, correctAnswer, explanation, ...(image?{image}:{}) }));
 
-  const makeHistoryQuestions = (topic, rows) => rows.map(([id, question, correctAnswer, alternatives, explanation]) => ({
+  const makeHistoryQuestions = (topic, rows) => rows.map(([id, question, correctAnswer, alternatives, explanation, detail]) => ({
     id:`history_${topic}_${id}`,
     categoryId:'history',
     subcategoryId:topic,
     question,
     options:makeOptions(`history-${topic}-${id}`, correctAnswer, [correctAnswer, ...alternatives]),
     correctAnswer,
-    explanation
+    explanation,
+    ...(detail?{detail}:{})
   }));
 
   const ancientQuestions = makeHistoryQuestions('ancient-civilizations', [
@@ -467,7 +474,7 @@ window.AppData = (() => {
     ['maya','Gelişmiş takvimleri ve şehir devletleriyle tanınan Orta Amerika uygarlığı hangisidir?','Maya',['İnka','Fenike','Asur'],'Maya uygarlığı yazı, matematik, astronomi ve takvim çalışmalarıyla tanınır.'],
     ['aztec-capital','Aztek İmparatorluğu’nun başkenti hangisidir?','Tenochtitlan',['Cusco','Teotihuacan','Chichén Itzá'],'Tenochtitlan, günümüz Mexico City bölgesinde kurulmuş Aztek başkentiydi.'],
     ['inca-region','İnka İmparatorluğu ağırlıklı olarak hangi coğrafyada gelişmiştir?','And Dağları',['Sahra Çölü','Mezopotamya Ovası','İskandinavya'],'İnka İmparatorluğu, Güney Amerika’daki And Dağları boyunca yayıldı.'],
-    ['hannibal','Hannibal hangi devletin komutanıydı?','Kartaca',['Roma','Makedonya','Pers'],'Hannibal, İkinci Pön Savaşı’nda Roma’ya karşı savaşan Kartacalı komutandı.'],
+    ['hannibal','Hannibal hangi devletin komutanıydı?','Kartaca',['Roma','Makedonya','Pers'],'Hannibal, İkinci Pön Savaşı’nda Roma’ya karşı savaşan Kartacalı komutandı.','İkinci Pön Savaşı, MÖ 218–201 yılları arasında Akdeniz hâkimiyeti için Kartaca ile Roma arasında yapıldı. Hannibal ordusunu ve savaş fillerini Alplerden geçirerek İtalya’ya girdi; ancak savaş sonunda Roma galip geldi.'],
     ['minoan','Minos uygarlığı hangi adada gelişmiştir?','Girit',['Sicilya','Kıbrıs','Sardinya'],'Minos uygarlığının merkezi Girit Adası’ndaki Knossos çevresiydi.'],
     ['linear-b','Linear B yazısı hangi uygarlıkla ilişkilidir?','Miken',['Fenike','Olmek','Urartu'],'Linear B, Miken saraylarında kullanılan erken bir Yunanca yazı sistemidir.'],
     ['nineveh','Ninova hangi imparatorluğun önemli başkentlerinden biriydi?','Asur',['Hitit','İnka','Aksum'],'Ninova, Yeni Asur İmparatorluğu’nun büyük siyasî ve kültürel merkezlerinden biriydi.'],
@@ -640,5 +647,9 @@ window.AppData = (() => {
   expandedTurkishHistoryQuestions = [...suppliedPreIslamicTest1, ...generatedPreIslamic.slice(30), ...expandedTurkishHistoryQuestions.filter(question=>question.periodId!=='pre-islamic')];
   turkishHistoryPeriods.forEach(period=>{period.questionIds=expandedTurkishHistoryQuestions.filter(question=>question.periodId===period.id).map(question=>question.id.replace('history_turkish-history_',''));});
 
-  return { categories, subcategories, artSubcategories, historySubcategories, turkishHistoryPeriods, questions, flagQuestions, currencyQuestions, currencyCodeQuestions, codeCurrencyQuestions, artQuestions, ancientQuestions, turkishHistoryQuestions:expandedTurkishHistoryQuestions, quizLength: 10 };
+  // Yeni içerik dönemi: kategori iskeleti korunur, bütün eski soru havuzları devre dışıdır.
+  const emptyQuestions = [];
+  const freshCapitalQuestions = window.WorldCapitalQuestions || [];
+  const emptyTurkishHistoryPeriods = turkishHistoryPeriods.map(period=>({...period,questionIds:[]}));
+  return { categories, subcategories, artSubcategories, historySubcategories, turkishHistoryPeriods:emptyTurkishHistoryPeriods, questions:freshCapitalQuestions, flagQuestions:emptyQuestions, currencyQuestions:emptyQuestions, currencyCodeQuestions:emptyQuestions, codeCurrencyQuestions:emptyQuestions, artQuestions:emptyQuestions, ancientQuestions:emptyQuestions, turkishHistoryQuestions:emptyQuestions, quizLength: 10 };
 })();
